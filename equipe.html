@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Meu Código de Convite</title>
+    <style type="text/css">
+        body {
+            background-color: #df9301;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .share_mian {
+            background: white;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .share_title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .share_code {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .code_left {
+            flex: 1;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .code_r {
+            margin-left: 10px;
+        }
+        .code_r a {
+            display: block;
+            padding: 10px 15px;
+            background: #df9301;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .team-level {
+            display: flex;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        .level-circle {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        .level-info {
+            flex: 1;
+        }
+        .level-row {
+            display: flex;
+            margin-bottom: 5px;
+        }
+        .level-item {
+            flex: 1;
+            text-align: center;
+        }
+        .level-item div:first-child {
+            font-weight: bold;
+            color: #df9301;
+        }
+        .level-item div:last-child {
+            font-size: 12px;
+            color: #666;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        .foot_bo {
+            text-align: center;
+        }
+        .foot_bo img {
+            width: 24px;
+            height: 24px;
+        }
+        .foot_bo p {
+            margin: 5px 0 0;
+            font-size: 12px;
+            color: #666;
+        }
+        .foot_bo .xz {
+            color: #df9301 !important;
+        }
+    </style>
+</head>
+<body>
+<div class="share_mian">
+    <div class="share_title">Meu Código de Convite</div>
+    <div class="share_code">
+        <div class="code_left" id="inviteLinkText">Carregando...</div>
+        <div class="code_r"><a href="javascript:void(0);" id="copyButton">Copiar</a></div>
+    </div>
+</div>
+
+<div class="share_mian">
+    <div class="share_title">Minha Equipe</div>
+    
+    <div class="team-level" onclick="window.location.href='leve1.html'">
+        <div class="level-circle">LV1</div>
+        <div class="level-info">
+            <div class="level-row">
+                <div class="level-item">
+                    <div>20%</div>
+                    <div>Taxa de comissão</div>
+                </div>
+                <div class="level-item">
+                    <div id="task1_count">0</div>
+                    <div>Número de Equipe</div>
+                </div>
+                <div class="level-item">
+                    <div id="lv1_team_income">0.00</div>
+                    <div>Comissão</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="team-level" onclick="window.location.href='level2.html'">
+        <div class="level-circle">LV2</div>
+        <div class="level-info">
+            <div class="level-row">
+                <div class="level-item">
+                    <div>4%</div>
+                    <div>Taxa de comissão</div>
+                </div>
+                <div class="level-item">
+                    <div id="task2_count">0</div>
+                    <div>Número de Equipe</div>
+                </div>
+                <div class="level-item">
+                    <div id="lv2_team_income">0.00</div>
+                    <div>Comissão</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="team-level" onclick="window.location.href='level3.html'">
+        <div class="level-circle">LV3</div>
+        <div class="level-info">
+            <div class="level-row">
+                <div class="level-item">
+                    <div>1%</div>
+                    <div>Taxa de comissão</div>
+                </div>
+                <div class="level-item">
+                    <div id="task3_count">0</div>
+                    <div>Número de Equipe</div>
+                </div>
+                <div class="level-item">
+                    <div id="lv3_team_income">0.00</div>
+                    <div>Comissão</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="height: 70px;"></div>
+
+<footer>
+    <div class="foot_bo">
+        <a href="home.html">
+            <img src="https://fanucss.shop/ww4.png"/>
+            <p>Início</p>
+        </a>
+    </div>
+    <div class="foot_bo">
+        <a href="renda.html">
+            <img src="https://fanucss.shop/ww6.png"/>
+            <p>Renda</p>
+        </a>
+    </div>
+    <div class="foot_bo">
+        <a href="equipe.html">
+            <img src="https://fanucss.shop/ww5.png"/>
+            <p class="xz">Compartilhar</p>
+        </a>
+    </div>
+    <div class="foot_bo">
+        <a href="meu.html">
+            <img src="https://fanucss.shop/ww7.png"/>
+            <p>Meu</p>
+        </a>
+    </div>
+</footer>
+
+<!-- Adicionando a biblioteca ClipboardJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+
+<script type="text/javascript">
+    // Função para mostrar mensagens usando layer.js ou fallback
+    function showMessage(message) {
+        if (typeof layer !== 'undefined') {
+            layer.open({
+                content: message,
+                skin: 'msg',
+                time: 2
+            });
+        } else {
+            alert(message);
+        }
+    }
+
+    // Função principal para carregar o código de convite
+    async function loadUserInviteCode() {
+        const userId = localStorage.getItem("user_id");
+        if (!userId) {
+            showMessage("Faça login para acessar seu código de convite");
+            return;
+        }
+
+        try {
+            const response = await fetch(`https://api-wped.onrender.com/user/${userId}`);
+            if (!response.ok) {
+                throw new Error("Carregar... ");
+            }
+            
+            const userData = await response.json();
+            
+            if (userData.codigo_convite) {
+                const inviteLink = `file:///C:/Users/us/Desktop/Flanac/register.html?inviteCode=${userData.codigo_convite}`;
+                document.getElementById('inviteLinkText').textContent = inviteLink;
+                
+                // Configurar botão de copiar com ClipboardJS
+                new ClipboardJS('#copyButton', {
+                    text: function() {
+                        return inviteLink;
+                    }
+                });
+                
+                document.getElementById('copyButton').addEventListener('click', function() {
+                    showMessage("Link copiado com sucesso!");
+                });
+            } else {
+                throw new Error("Código de convite não encontrado");
+            }
+        } catch (error) {
+            console.error("Erro:", error);
+            document.getElementById('inviteLinkText').textContent = "Carregar...";
+            showMessage("Erro ao carregar código de convite");
+        }
+    }
+
+    async function loadTeamData() {
+        try {
+            const userId = localStorage.getItem("user_id");
+            if (!userId) {
+                showMessage("Usuário não autenticado.");
+                return;
+            }
+
+            // 1. Buscar dados do usuário logado
+            const responseUser = await fetch(`https://api-wped.onrender.com/user/${userId}`);
+            const userData = await responseUser.json();
+            const myCode = userData.codigo_convite;
+
+            // 2. Buscar todos os usuários
+            const responseAll = await fetch("https://api-wped.onrender.com/user");
+            const allUsers = await responseAll.json();
+
+            // 3. Nível 1 = quem usou meu código de convite
+            const level1 = allUsers.filter(u => u.codigo_convite_referido === myCode);
+
+            // 4. Nível 2 = quem foi convidado por alguém do nível 1
+            const level1Codes = level1.map(u => u.codigo_convite);
+            const level2 = allUsers.filter(u => level1Codes.includes(u.codigo_convite_referido));
+
+            // 5. Nível 3 = quem foi convidado por alguém do nível 2
+            const level2Codes = level2.map(u => u.codigo_convite);
+            const level3 = allUsers.filter(u => level2Codes.includes(u.codigo_convite_referido));
+
+            // Atualizar contagem de usuários
+            document.getElementById('task1_count').textContent = level1.length;
+            document.getElementById('task2_count').textContent = level2.length;
+            document.getElementById('task3_count').textContent = level3.length;
+
+            // Calcular rendimentos (simplificado - você precisará implementar a lógica real)
+            document.getElementById('lv1_team_income').textContent = (level1.length * 30).toFixed(2);
+            document.getElementById('lv2_team_income').textContent = (level2.length * 15).toFixed(2);
+            document.getElementById('lv3_team_income').textContent = (level3.length * 5).toFixed(2);
+
+        } catch (error) {
+            console.error('Carregar dados da equipe...:', error);
+            showMessage("Carregar dados da equipe...");
+        }
+    }
+
+    // Inicialização da página
+    document.addEventListener('DOMContentLoaded', () => {
+        loadUserInviteCode();
+        loadTeamData();
+        
+        // Adicionar classe ativa ao item do menu da equipe
+        const footerItems = document.querySelectorAll('.foot_bo');
+        footerItems.forEach(item => {
+            item.addEventListener('click', function() {
+                footerItems.forEach(i => i.querySelector('p').classList.remove('xz'));
+                this.querySelector('p').classList.add('xz');
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Flanuc - Depósito</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/layui@2.8.12/dist/css/layui.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .header {
+            background-color: #df9301;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .header img {
+            height: 40px;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 15px;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .container {
+            margin-top: 70px;
+            padding: 15px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .bank-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .bank-btn {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .bank-btn.active {
+            border-color: #df9301;
+            background: #fff9e6;
+        }
+        
+        .bank-btn img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 5px;
+        }
+        
+        .bank-info {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .bank-info.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .copy-btn {
+            background: #df9301;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 5px;
+            width: 100%;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .upload-area i {
+            font-size: 40px;
+            color: #df9301;
+            margin-bottom: 10px;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .btn-submit {
+            background: #df9301;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading i {
+            font-size: 30px;
+            color: #df9301;
+        }
+        
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .confirmation-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .confirmation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .confirmation-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .confirm-btn {
+            background: #df9301;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background: #ddd;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="back-btn" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+        <img src="https://fanucss.shop/flogo.jpg" alt="Flanuc Logo">
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2>Selecione o Banco</h2>
+            <div class="bank-selector">
+                <div class="bank-btn" data-bank="atl">
+                    <img src="https://fanucss.shop//fan.jpg" alt="ATL">
+                    <div>ATL</div>
+                </div>
+                <div class="bank-btn" data-bank="bfa">
+                    <img src="https://fanucss.shop//fan.jpg" alt="BFA">
+                    <div>BFA</div>
+                </div>
+                <div class="bank-btn" data-bank="bai">
+                    <img src="https://fanucss.shop//fan.jpg" alt="BAI">
+                    <div>BAI</div>
+                </div>
+                <div class="bank-btn" data-bank="bic">
+                    <img src="https://fanucss.shop//fan.jpg" alt="BIC">
+                    <div>BIC</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card bank-info" id="atl-info">
+            <h3>Informações para Depósito - ATL</h3>
+            <div class="form-group">
+                <label>Nome da Conta</label>
+                <input type="text" class="form-control" value="LOYA DE CASTRO" readonly>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+            </div>
+            <div class="form-group">
+                <label>Número da Conta</label>
+                <input type="text" class="form-control" value="005500002203243310171" readonly>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+            </div>
+            <div class="form-group">
+                <label>Valor</label>
+                <input type="number" class="form-control" id="deposit-amount-atl" placeholder="Digite o valor">
+            </div>
+        </div>
+        
+        <div class="card bank-info" id="bfa-info">
+            <h3>Informações para Depósito - BFA</h3>
+            <div class="form-group">
+                <label>Nome da Conta</label>
+                <input type="text" class="form-control" value="THOKO CAHISSO" readonly>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+            </div>
+            <div class="form-group">
+                <label>Número da Conta</label>
+                <input type="text" class="form-control" value="000600009504785930119" readonly>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+            </div>
+            <div class="form-group">
+                <label>Valor</label>
+                <input type="number" class="form-control" id="deposit-amount-bfa" placeholder="Digite o valor">
+            </div>
+        </div>
+        
+        <div class="card bank-info" id="bai-info">
+            <h3>Informações para Depósito - BAI</h3>
+            <div class="form-group">
+                <label>Nome da Conta</label>
+                <input type="text" class="form-control" value="JOSE CABRAL" readonly>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+            </div>
+            <div class="form-group">
+                <label>Número da Conta</label>
+                <input type="text" class="form-control" value="004000006727272810213" readonly>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+            </div>
+            <div class="form-group">
+                <label>Valor</label>
+                <input type="number" class="form-control" id="deposit-amount-bai" placeholder="Digite o valor">
+            </div>
+        </div>
+        
+        <div class="card bank-info" id="bic-info">
+            <h3>Informações para Depósito - BIC</h3>
+            <div class="form-group">
+                <label>Nome da Conta</label>
+                <input type="text" class="form-control" value="CABRAL JOSE" readonly>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+            </div>
+            <div class="form-group">
+                <label>Número da Conta</label>
+                <input type="text" class="form-control" value="005100004466131910167" readonly>
+                <button class="copy-btn" onclick="copyToClipboard(this)">Copiar</button>
+            </div>
+            <div class="form-group">
+                <label>Valor</label>
+                <input type="number" class="form-control" id="deposit-amount-bic" placeholder="Digite o valor">
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Enviar Comprovante</h2>
+               <div class="upload-area" id="uploadArea">
+        <i class="fas fa-camera"></i>
+        <p>Clique para adicionar o comprovante</p>
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        <img id="previewImage" class="preview-image">
+    </div>
+            <div class="form-group">
+                <label>Seu Nome</label>
+                <input type="text" class="form-control" id="sender-name" placeholder="Digite seu nome">
+            </div>
+            <button class="btn-submit" id="submitBtn">Enviar Depósito</button>
+        </div>
+        
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Processando...</p>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="confirmation-content">
+            <h3>Confirmar Depósito</h3>
+            <p id="confirmationText">Você está prestes a enviar o comprovante de depósito. Deseja continuar?</p>
+            <div class="confirmation-buttons">
+                <button class="confirmation-btn cancel-btn" id="cancelBtn">Cancelar</button>
+                <button class="confirmation-btn confirm-btn" id="confirmBtn">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suas bibliotecas -->
+    <script src="https://cdn.jsdelivr.net/npm/layui@2.8.12/dist/layui.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+    function copyToClipboard(button) {
+        const text = $(button).prev('input').val();
+        navigator.clipboard.writeText(text).then(() => {
+            layui.layer.msg('Copiado: ' + text);
+        }).catch(err => {
+            console.error('Erro ao copiar: ', err);
+        });
+    }
+
+    $(document).ready(function() {
+        const banks = {
+            atl: { name: "LOYA DE CASTRO", account: "005500002203243310171" },
+            bfa: { name: "JOSE CABRAL", account: "000600009504785930119" },
+            bai: { name: "CABRAL JOSE", account: "004000006727272810213" },
+            bic: { name: "THOKO CAHISSO", account: "005100004466131910167" }
+        };
+
+        // Seleciona banco
+        $('.bank-btn').click(function() {
+            const bank = $(this).data('bank');
+            $('.bank-btn').removeClass('active');
+            $(this).addClass('active');
+            $('.bank-info').removeClass('active');
+            $(`#${bank}-info`).addClass('active');
+
+            $(`#${bank}-info input[type="text"]:first`).val(banks[bank].name);
+            $(`#${bank}-info input[type="text"]:last`).val(banks[bank].account);
+        });
+
+        // Upload de imagem
+      // CORREÇÃO PARA O PROBLEMA DE UPLOAD
+        $('#uploadArea').on('click', function(e) {
+            // Verifica se o clique foi diretamente na área de upload e não em elementos filhos
+            if (e.target === this || $(e.target).is('i, p')) {
+                $('#fileInput').trigger('click');
+            }
+        });
+
+        $('#fileInput').on('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    $('#previewImage').attr('src', event.target.result).show();
+                    $('#uploadArea i, #uploadArea p').hide();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+      
+        // Enviar depósito - Mostrar confirmação primeiro
+        $('#submitBtn').click(function() {
+            const selectedBank = $('.bank-btn.active').data('bank');
+            let amount;
+
+            switch(selectedBank) {
+                case 'atl': amount = $('#deposit-amount-atl').val(); break;
+                case 'bfa': amount = $('#deposit-amount-bfa').val(); break;
+                case 'bai': amount = $('#deposit-amount-bai').val(); break;
+                case 'bic': amount = $('#deposit-amount-bic').val(); break;
+                default: amount = null;
+            }
+
+            const senderName = $('#sender-name').val();
+            const fileInput = $('#fileInput')[0];
+
+            if (!selectedBank) {
+                layui.layer.msg('Selecione um banco');
+                return;
+            }
+            if (!amount || isNaN(amount)) {
+                layui.layer.msg('Digite um valor válido');
+                return;
+            }
+            if (!fileInput.files || fileInput.files.length === 0) {
+                layui.layer.msg('Adicione o comprovante');
+                return;
+            }
+            if (!senderName) {
+                layui.layer.msg('Digite seu nome');
+                return;
+            }
+
+            // Mostrar modal de confirmação
+            $('#confirmationText').html(`
+                Você está prestes a enviar:<br><br>
+                <strong>Banco:</strong> ${selectedBank.toUpperCase()}<br>
+                <strong>Valor:</strong> ${amount}<br>
+                <strong>Nome:</strong> ${senderName}<br><br>
+                Deseja continuar?
+            `);
+            $('#confirmationModal').show();
+        });
+
+        // Cancelar envio
+        $('#cancelBtn').click(function() {
+            $('#confirmationModal').hide();
+        });
+
+        // Confirmar envio
+        $('#confirmBtn').click(function() {
+            $('#confirmationModal').hide();
+            $('#loading').show();
+
+            const selectedBank = $('.bank-btn.active').data('bank');
+            let amount;
+
+            switch(selectedBank) {
+                case 'atl': amount = $('#deposit-amount-atl').val(); break;
+                case 'bfa': amount = $('#deposit-amount-bfa').val(); break;
+                case 'bai': amount = $('#deposit-amount-bai').val(); break;
+                case 'bic': amount = $('#deposit-amount-bic').val(); break;
+                default: amount = null;
+            }
+
+            const senderName = $('#sender-name').val();
+            const fileInput = $('#fileInput')[0];
+
+            const userData = localStorage.getItem('user_data');
+            let userId = null;
+
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    userId = user.id || null;
+                } catch (e) {
+                    console.error("Erro ao parsear user data:", e);
+                }
+            }
+            if (!userId) userId = localStorage.getItem('user_id') || null;
+
+            if (!userId) {
+                layui.layer.msg('Usuário não identificado');
+                $('#loading').hide();
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const base64Image = event.target.result.split(',')[1];
+                const depositData = {
+                    user_id: userId,
+                    bank: selectedBank.toUpperCase(),
+                    amount: parseFloat(amount),
+                    sender_name: senderName,
+                    receipt_image: base64Image,
+                    timestamp: new Date().toISOString()
+                };
+
+                // Simulação de envio (substitua pela sua API real)
+                setTimeout(() => {
+                    $('#loading').hide();
+                    layui.layer.msg('Depósito enviado com sucesso!');
+                    
+                    // Limpar formulário
+                    $(`#deposit-amount-${selectedBank}`).val('');
+                    $('#sender-name').val('');
+                    $('#fileInput').val('');
+                    $('#previewImage').hide().attr('src', '');
+                    $('#uploadArea i, #uploadArea p').show();
+                    
+                    console.log('Dados enviados:', depositData);
+                }, 2000);
+
+                
+                $.ajax({
+                    url: 'https://api-wped.onrender.com/deposito',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(depositData),
+                    success: function(response) {
+                        const historyData = {
+                            user_id: userId,
+                            type: 'deposito',
+                            amount: `+${amount}`,
+                            description: `Depósito via ${selectedBank.toUpperCase()}`,
+                            timestamp: new Date().toISOString()
+                        };
+
+                        $.ajax({
+                            url: 'https://api-wped.onrender.com/historico',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(historyData),
+                            success: function() {
+                                $('#loading').hide();
+                                layui.layer.msg('Depósito enviado com sucesso!');
+                                $(`#deposit-amount-${selectedBank}`).val('');
+                                $('#sender-name').val('');
+                                $('#fileInput').val('');
+                                $('#previewImage').hide().attr('src', '');
+                                $('#uploadArea i, #uploadArea p').show();
+                            },
+                            error: function() {
+                                $('#loading').hide();
+                                layui.layer.msg('Erro ao registrar no histórico');
+                            }
+                        });
+                    },
+                    error: function() {
+                        $('#loading').hide();
+                        layui.layer.msg('Erro ao enviar depósito');
+                    }
+                });
+                
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        });
+    });
+    </script>
+</body>
+</html>

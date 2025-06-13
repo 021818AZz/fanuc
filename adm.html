@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Painel Admin - Atendimento</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: #df9301;
+            color: white;
+            padding: 15px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .container {
+            margin-top: 70px;
+            padding: 15px;
+            display: flex;
+            height: calc(100vh - 70px);
+        }
+        
+        /* Lista de conversas */
+        .conversations-list {
+            width: 300px;
+            border-right: 1px solid #ddd;
+            overflow-y: auto;
+            padding-right: 10px;
+            background: white;
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .conversation-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .conversation-item:hover {
+            background: #f9f9f9;
+        }
+        
+        .conversation-item.active {
+            background: #fff9e6;
+            border-left: 3px solid #df9301;
+        }
+        
+        .conversation-user {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .conversation-preview {
+            font-size: 14px;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .conversation-time {
+            font-size: 12px;
+            color: #999;
+            margin-top: 3px;
+        }
+        
+        /* Área de chat */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .chat-header {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-weight: bold;
+            background: #f9f9f9;
+        }
+        
+        .chat-container {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message-user {
+            align-items: flex-start;
+        }
+        
+        .message-admin {
+            align-items: flex-end;
+        }
+        
+        .message-content {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            margin-top: 5px;
+            word-wrap: break-word;
+        }
+        
+        .user-message {
+            background-color: #e5e5ea;
+            color: black;
+        }
+        
+        .admin-message {
+            background-color: #df9301;
+            color: white;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: #999;
+            margin-top: 3px;
+        }
+        
+        .input-area {
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            background: #f9f9f9;
+        }
+        
+        .input-area input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        
+        .input-area button {
+            background: #df9301;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading i {
+            color: #df9301;
+        }
+        
+        .no-conversation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            color: #999;
+        }
+        
+        .search-box {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding-left: 35px;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 25px;
+            top: 18px;
+            color: #999;
+        }
+        
+        .unread-count {
+            background: #ff4d4d;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <span>Painel Admin - Atendimento ao Cliente</span>
+    </div>
+    
+    <div class="container">
+        <!-- Lista de conversas -->
+        <div class="conversations-list">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Buscar usuários...">
+            </div>
+            <div id="conversationsList">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Área de chat -->
+        <div class="chat-area" id="chatArea">
+            <div class="no-conversation" id="noConversation">
+                Selecione uma conversa para visualizar
+            </div>
+            
+            <div id="activeChat" style="display: none;">
+                <div class="chat-header" id="chatHeader">
+                    Conversa com <span id="currentUserId"></span>
+                </div>
+                <div class="chat-container" id="chatContainer"></div>
+                <div class="input-area">
+                    <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
+                    <button id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // URL da API
+        const apiUrl = 'https://api-wped.onrender.com';
+        let currentUserId = null;
+        
+        // Carregar lista de conversas
+        function loadConversations() {
+            $('#conversationsList').html('<div class="loading"><i class="fas fa-spinner fa-spin"></i></div>');
+            
+            $.ajax({
+                url: apiUrl + '/cheq',
+                type: 'GET',
+                success: function(response) {
+                    if (response && response.length > 0) {
+                        renderConversationsList(response);
+                    } else {
+                        $('#conversationsList').html('<p style="padding: 20px; text-align: center; color: #999;">Nenhuma conversa encontrada</p>');
+                    }
+                },
+                error: function() {
+                    $('#conversationsList').html('<p style="padding: 20px; text-align: center; color: #ff4d4d;">Erro ao carregar conversas</p>');
+                }
+            });
+        }
+        
+        // Renderizar lista de conversas
+        function renderConversationsList(conversations) {
+            let html = '';
+            
+            conversations.forEach(conv => {
+                const lastMessage = conv.last_message || 'Nenhuma mensagem';
+                const time = conv.last_message_time ? formatTime(conv.last_message_time) : '';
+                const unread = conv.unread_count > 0 ? `<div class="unread-count">${conv.unread_count}</div>` : '';
+                
+                html += `
+                    <div class="conversation-item" data-userid="${conv.user_id}">
+                        <div class="conversation-user">${conv.user_id}</div>
+                        <div class="conversation-preview">${lastMessage}</div>
+                        <div class="conversation-time">${time}</div>
+                        ${unread}
+                    </div>
+                `;
+            });
+            
+            $('#conversationsList').html(html);
+            
+            // Adicionar evento de clique
+            $('.conversation-item').click(function() {
+                const userId = $(this).data('userid');
+                openConversation(userId);
+                $(this).find('.unread-count').remove();
+            });
+        }
+        
+        // Abrir conversa
+        function openConversation(userId) {
+            currentUserId = userId;
+            $('#noConversation').hide();
+            $('#activeChat').show();
+            $('#currentUserId').text(userId);
+            
+            // Marcar como lido
+            $.ajax({
+                url: apiUrl + '/mark-read',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ user_id: userId }),
+                success: function() {
+                    // Atualizar lista de conversas
+                    loadConversations();
+                }
+            });
+            
+            // Carregar mensagens
+            loadMessages(userId);
+            
+            // Ativar item na lista
+            $('.conversation-item').removeClass('active');
+            $(`.conversation-item[data-userid="${userId}"]`).addClass('active');
+        }
+        
+        // Carregar mensagens
+        function loadMessages(userId) {
+            $('#chatContainer').html('<div class="loading"><i class="fas fa-spinner fa-spin"></i></div>');
+            
+            $.ajax({
+                url: apiUrl,
+                type: 'GET',
+                data: { user_id: userId },
+                success: function(response) {
+                    $('#chatContainer').empty();
+                    
+                    if (response && response.messages && response.messages.length > 0) {
+                        response.messages.forEach(msg => {
+                            addMessageToChat(msg.sender, msg.message, msg.timestamp);
+                        });
+                    } else {
+                        $('#chatContainer').html('<p style="text-align: center; color: #999; padding: 20px;">Nenhuma mensagem nesta conversa</p>');
+                    }
+                    
+                    scrollToBottom();
+                },
+                error: function() {
+                    $('#chatContainer').html('<p style="text-align: center; color: #ff4d4d; padding: 20px;">Erro ao carregar mensagens</p>');
+                }
+            });
+        }
+        
+        // Adicionar mensagem ao chat
+        function addMessageToChat(sender, message, timestamp) {
+            const isAdmin = sender === 'admin';
+            const time = formatTime(timestamp);
+            
+            const messageHtml = `
+                <div class="message ${isAdmin ? 'message-admin' : 'message-user'}">
+                    <div class="message-content ${isAdmin ? 'admin-message' : 'user-message'}">
+                        ${message}
+                    </div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+            
+            $('#chatContainer').append(messageHtml);
+        }
+        
+        // Formatador de data/hora
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+        
+        // Rolagem automática para baixo
+        function scrollToBottom() {
+            const container = document.getElementById('chatContainer');
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        // Enviar mensagem
+        $('#sendButton').click(sendMessage);
+        $('#messageInput').keypress(function(e) {
+            if (e.which === 13) {
+                sendMessage();
+            }
+        });
+        
+        function sendMessage() {
+            const message = $('#messageInput').val().trim();
+            if (!message || !currentUserId) return;
+            
+            const timestamp = new Date().toISOString();
+            
+            // Adiciona mensagem do admin imediatamente
+            addMessageToChat('admin', message, timestamp);
+            $('#messageInput').val('');
+            
+            // Envia para a API
+            $.ajax({
+                url: apiUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    user_id: currentUserId,
+                    sender: 'admin',
+                    message: message,
+                    timestamp: timestamp
+                }),
+                success: function() {
+                    // Atualiza a lista de conversas
+                    loadConversations();
+                },
+                error: function() {
+                    alert('Erro ao enviar mensagem. Tente novamente.');
+                }
+            });
+        }
+        
+        // Busca na lista de conversas
+        $('#searchInput').keyup(function() {
+            const searchTerm = $(this).val().toLowerCase();
+            $('.conversation-item').each(function() {
+                const text = $(this).text().toLowerCase();
+                $(this).toggle(text.includes(searchTerm));
+            });
+        });
+        
+        // Atualizar conversas periodicamente
+        setInterval(loadConversations, 30000); // A cada 30 segundos
+        
+        // Carregar conversas iniciais
+        loadConversations();
+    });
+    </script>
+</body>
+</html>

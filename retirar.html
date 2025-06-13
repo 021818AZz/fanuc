@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html class="pixel-ratio-3 retina android android-5 android-5-0 watch-active-state">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title>Retirar Dinheiro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff;
+        }
+        
+        .navbar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            line-height: 40px;
+            z-index: 20;
+            background: #df9301;
+            color: white;
+        }
+        
+        .navbar .left {
+            width: 50px;
+            height: 40px;
+            position: absolute;
+            left: 10px;
+        }
+        
+        .navbar .center {
+            text-align: center;
+            width: 100%;
+            color: white;
+        }
+        
+        .navbar .right {
+            width: 50px;
+            height: 40px;
+            position: absolute;
+            right: 10px;
+        }
+        
+        .cz-index-top {
+            margin-top: 65px;
+            background: #df9301;
+            color: white;
+            padding: 15px;
+        }
+        
+        .tixianlog-index-top-title {
+            font-size: 16px;
+        }
+        
+        .tixianlog-index-top-mull {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .exchange {
+            padding-top: 1rem;
+        }
+        
+        .wi-tix-sss {
+            width: 92%;
+            margin: 0 4%;
+            padding: 5px 0;
+            border: 1px #df9301 solid;
+            border-radius: 0.5rem;
+            display: flex;
+            flex-direction: row;
+        }
+        
+        .wi-tix-sss span {
+            width: 80px;
+            font-size: 30px;
+            height: 4rem;
+            text-align: center;
+            display: block;
+            color: #df9301;
+        }
+        
+        .wi-tix-sss input {
+            width: calc(100% - 50px);
+            font-size: 24px;
+            height: 4rem;
+            color: #df9301;
+            outline: none;
+            background: #fff;
+            border: none;
+            padding: 0 10px;
+        }
+        
+        .Putforwardbtn {
+            height: 3rem;
+            margin-top: 0.5rem;
+        }
+        
+        .Putforwardbtn button {
+            width: 92%;
+            float: left;
+            margin-left: 4%;
+            height: 3rem;
+            appearance: none;
+            background: #df9301;
+            outline: none;
+            border: none;
+            border-radius: 0.625rem;
+            font-size: 1rem;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        
+        .recharge-input {
+            width: 92%;
+            margin-left: 4%;
+            margin-top: 0.5rem;
+            border: 1px solid #df9301;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            display: inline-flex;
+            border-radius: 5px;
+            background: #fff;
+        }
+        
+        .recharge-input span {
+            color: #8f8f8f;
+            width: 35%;
+            margin-left: 0.5rem;
+            margin-top: 0.25rem;
+            height: 2rem;
+            line-height: 2rem;
+            text-align: left;
+        }
+        
+        .recharge-input input {
+            color: #df9301;
+            width: 60%;
+            margin: 0.25rem;
+            height: 2rem;
+            border: none;
+            background: #fff;
+        }
+        
+        .wi-tips {
+            width: 92%;
+            margin-left: 4%;
+            margin-top: 1.5rem;
+            color: #8f8f8f;
+            font-size: 12px;
+            line-height: 1.25rem;
+        }
+        
+        .account-select {
+            width: 92%;
+            margin-left: 4%;
+            margin-top: 0.5rem;
+            border: 1px solid #df9301;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            border-radius: 5px;
+            background: #fff;
+            padding: 0 10px;
+            color: #df9301;
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+        
+        .toast.success {
+            background-color: #4CAF50;
+        }
+        
+        .toast.error {
+            background-color: #F44336;
+        }
+        
+        .toast.warning {
+            background-color: #FF9800;
+        }
+        
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 18px;
+            z-index: 1000;
+        }
+        
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            padding: 10px 0;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .foot_bo {
+            text-align: center;
+        }
+        
+        .foot_bo img {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .foot_bo p {
+            font-size: 12px;
+            margin-top: 5px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="views">
+    <div class="navbar">
+        <div class="left">
+            <a href="javascript:history.back()">
+                <i class="fas fa-arrow-left"></i> 
+            </a>
+        </div>
+        <div class="center">Retirar Dinheiro</div>
+        <div class="right"></div>
+    </div>
+    
+    <div class="page navbar-fixed">
+        <div class="cz-index-top">
+            <p class="tixianlog-index-top-title">Meu Saldo</p>
+            <p class="tixianlog-index-top-mull" id="userBalance">KZ 0</p>
+        </div>
+        
+        <div class="exchange">
+            <p class="wi-tix-sss">
+                <span>KZ</span>
+                <input name="amount" id="amountInput" placeholder="Valor do Saque" oninput="this.value = this.value.replace(/\D/g, '').slice(0, 6)">
+            </p>
+            
+            <select id="accountSelect" class="account-select">
+                <option value="">Carregando contas...</option>
+            </select>
+            
+            <div class="recharge-input">
+                <span>Nome Real:</span>
+                <input type="text" id="userName" readonly>
+            </div>
+            
+            <div class="recharge-input">
+                <span>Conta:</span>
+                <input type="text" id="accountNumber" readonly>
+            </div>
+            
+            <div class="recharge-input">
+                <span>Banco:</span>
+                <input type="text" id="bankName" readonly>
+            </div>
+            
+            <div class="Putforwardbtn">
+                <button type="button" class="btn rechargeBtn">Sacar Agora</button>
+            </div>
+            
+            <div class="wi-tips">
+                <p><span style="text-wrap-mode: nowrap;">Instruções de retirada:</span></p>
+                <p><span style="text-wrap-mode: nowrap;"><br/></span></p>
+                <p><span style="text-wrap-mode: nowrap;">1. O valor mínimo de saque é de KZ700</span></p>
+                <p><span style="text-wrap-mode: nowrap;"><br/></span></p>
+                <p><span style="text-wrap-mode: nowrap;">2. Os saques estão disponíveis das 9h às 17h.</span></p>
+                <p><span style="text-wrap-mode: nowrap;">Retiradas de segunda a sexta-feira.</span></p>
+                <p><span style="text-wrap-mode: nowrap;"><br/></span></p>
+                <p><span style="text-wrap-mode: nowrap;">3. Os saques chegam em 10 minutos a 24h</span></p>
+                <p><span style="text-wrap-mode: nowrap;"><br/></span></p>
+                <p><span style="text-wrap-mode: nowrap;">4. Taxa de retirada: 13%</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="loading-overlay" style="display: none;">Carregando...</div>
+
+<script>
+$(document).ready(function() {
+    // URLs das APIs
+    const IBAN_API = 'https://api-wped.onrender.com/iban';
+    const WITHDRAWAL_API = 'https://api-wped.onrender.com/retirada';
+    const HISTORY_API = 'https://api-wped.onrender.com/historico';
+    const USER_API = 'https://api-wped.onrender.com/user';
+    
+    // Taxa de retirada
+    const WITHDRAWAL_TAX = 0.13; // 13%
+    const MIN_WITHDRAWAL = 700; // Valor mínimo de saque
+    
+    // Variáveis globais
+    let userData = {};
+    let userAccounts = [];
+    let currentBalance = 0;
+    
+    // Função para mostrar notificação
+    function showToast(message, type = 'success', duration = 3000) {
+        const toast = $('#toast');
+        toast.removeClass('success error warning').addClass(type).text(message);
+        toast.addClass('show');
+        
+        setTimeout(() => {
+            toast.removeClass('show');
+        }, duration);
+    }
+    
+    // Função para mostrar/ocultar loading
+    function showLoading(show) {
+        if (show) {
+            $('#loadingOverlay').show();
+        } else {
+            $('#loadingOverlay').hide();
+        }
+    }
+    
+    // Função para verificar se está no horário permitido para saques
+    function isWithdrawalTime() {
+        const now = new Date();
+        const day = now.getDay(); // 0 (Domingo) a 6 (Sábado)
+        const hours = now.getHours();
+        
+        // Verifica se é dia útil (segunda a sexta, 1 a 5)
+        if (day < 1 || day > 5) return false;
+        
+        // Verifica se está no horário permitido (9h às 17h)
+        return hours >= 9 && hours < 17;
+    }
+    
+    // Função para carregar os dados do usuário
+    function loadUserData() {
+        const userDataStr = localStorage.getItem('user_data');
+        const userId = localStorage.getItem('user_id');
+        
+        if (!userDataStr && !userId) {
+            showToast('Usuário não identificado. Faça login novamente.', 'error');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+            return;
+        }
+        
+        try {
+            // Tenta obter do user_data primeiro
+            if (userDataStr) {
+                userData = JSON.parse(userDataStr);
+            } 
+            // Fallback para user_id separado
+            else if (userId) {
+                userData = { id: userId };
+            }
+            
+            // Primeiro carrega as contas bancárias
+            loadUserAccounts();
+            
+            // Depois atualiza o saldo
+            updateUserBalanceFromAPI();
+        } catch (e) {
+            console.error('Erro ao carregar dados do usuário:', e);
+            showToast('Erro ao carregar dados do usuário', 'error');
+        }
+    }
+    
+    // Função para atualizar o saldo do usuário a partir da API
+    function updateUserBalanceFromAPI() {
+        if (!userData.id) return;
+        
+        $.get(`${USER_API}/${userData.id}`, function(response) {
+            if (response && response.saldo !== undefined) {
+                currentBalance = parseFloat(response.saldo);
+                $('#userBalance').text(`KZ ${currentBalance.toFixed(2)}`);
+            } else {
+                showToast('Erro ao carregar saldo: dados inválidos', 'error');
+            }
+        }).fail(function(xhr, status, error) {
+            console.error('Erro na requisição:', error);
+            showToast('Erro ao carregar saldo', 'error');
+        });
+    }
+    
+    // Função para carregar as contas bancárias do usuário
+    function loadUserAccounts() {
+        if (!userData.id) return;
+        
+        showLoading(true);
+        
+        $.get(`${IBAN_API}?userId=${userData.id}`, function(response) {
+            showLoading(false);
+            
+            if (response && response.length > 0) {
+                userAccounts = response;
+                populateAccountSelect();
+                
+                // Seleciona a primeira conta por padrão
+                if (userAccounts.length > 0) {
+                    selectAccount(userAccounts[0]);
+                }
+            } else {
+                // Se não tiver contas cadastradas, redireciona para adicionar
+                showToast('Nenhuma conta cadastrada', 'warning');
+                setTimeout(() => {
+                    window.location.href = 'iban.html';
+                }, 2000);
+            }
+        }).fail(function(xhr, status, error) {
+            showLoading(false);
+            console.error('Erro ao carregar contas:', error);
+            showToast('Erro ao carregar contas bancárias', 'error');
+        });
+    }
+    
+    // Função para popular o select de contas
+    function populateAccountSelect() {
+        const select = $('#accountSelect');
+        select.empty();
+        
+        if (userAccounts.length === 0) {
+            select.append('<option value="">Nenhuma conta cadastrada</option>');
+            return;
+        }
+        
+        userAccounts.forEach(account => {
+            select.append(`<option value="${account.id}">${account.bankName} - ${account.account}</option>`);
+        });
+    }
+    
+    // Função para selecionar uma conta
+    function selectAccount(account) {
+        $('#userName').val(account.name);
+        $('#accountNumber').val(account.account);
+        $('#bankName').val(account.bankName);
+    }
+    
+    // Evento quando seleciona uma conta diferente
+    $('#accountSelect').change(function() {
+        const accountId = $(this).val();
+        const selectedAccount = userAccounts.find(acc => acc.id == accountId);
+        
+        if (selectedAccount) {
+            selectAccount(selectedAccount);
+        }
+    });
+    
+    // Evento do botão de saque
+    $('.rechargeBtn').click(function() {
+        const amount = parseFloat($('#amountInput').val());
+        const selectedAccountId = $('#accountSelect').val();
+        
+        // Validações
+        if (!amount || isNaN(amount) || amount <= 0) {
+            showToast('Digite o valor do saque', 'warning');
+            return;
+        }
+        
+        if (amount < MIN_WITHDRAWAL) {
+            showToast(`O valor mínimo do saque é KZ${MIN_WITHDRAWAL}`, 'warning');
+            return;
+        }
+        
+        if (amount > currentBalance) {
+            showToast('Saldo insuficiente', 'warning');
+            return;
+        }
+        
+        if (!selectedAccountId) {
+            showToast('Selecione uma conta bancária', 'warning');
+            return;
+        }
+        
+        // Verifica horário de saque
+        if (!isWithdrawalTime()) {
+            showToast('Saques disponíveis apenas de segunda a sexta, das 9h às 17h', 'warning');
+            return;
+        }
+        
+        // Calcula o valor com taxa
+        const taxAmount = amount * WITHDRAWAL_TAX;
+        const netAmount = amount - taxAmount;
+        
+        // Confirmação
+        const confirmationMsg = `Valor do saque: KZ${amount.toFixed(2)}\n` +
+                               `Taxa (13%): KZ${taxAmount.toFixed(2)}\n` +
+                               `Valor líquido: KZ${netAmount.toFixed(2)}\n\n` +
+                               `Confirmar saque?`;
+        
+        if (!confirm(confirmationMsg)) {
+            return;
+        }
+        
+        // Obtém a conta selecionada
+        const selectedAccount = userAccounts.find(acc => acc.id == selectedAccountId);
+        
+        // Prepara os dados para a API de retirada
+        const withdrawalData = {
+            userId: userData.id,
+            accountId: selectedAccountId,
+            name: selectedAccount.name,
+            bankName: selectedAccount.bankName,
+            account: selectedAccount.account,
+            amount: amount,
+            tax: taxAmount,
+            netAmount: netAmount,
+            status: 'pendente',
+            createdAt: new Date().toISOString()
+        };
+        
+        // Prepara os dados para o histórico
+        const historyData = {
+            userId: userData.id,
+            type: 'retirada',
+            amount: -amount, // Valor negativo para retirada
+            description: `Saque para ${selectedAccount.bankName} - ${selectedAccount.account}`,
+            createdAt: new Date().toISOString()
+        };
+        
+        // Prepara os dados para atualizar o saldo do usuário
+        const userUpdateData = {
+            saldo: (currentBalance - amount).toFixed(2)
+        };
+        
+        showLoading(true);
+        
+        // Envia a solicitação de retirada
+        $.ajax({
+            url: WITHDRAWAL_API,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(withdrawalData),
+            success: function() {
+                // Registra no histórico
+                $.ajax({
+                    url: HISTORY_API,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(historyData),
+                    success: function() {
+                        // Atualiza o saldo do usuário
+                        $.ajax({
+                            url: `${USER_API}/${userData.id}`,
+                            type: 'PATCH',
+                            contentType: 'application/json',
+                            data: JSON.stringify(userUpdateData),
+                            success: function() {
+                                showLoading(false);
+                                showToast('Saque solicitado com sucesso!', 'success');
+                                
+                                // Atualiza o saldo localmente
+                                currentBalance = userUpdateData.saldo;
+                                $('#userBalance').text(`KZ ${parseInt(currentBalance)}`);
+
+                                
+                                // Limpa o campo de valor
+                                $('#amountInput').val('');
+                                
+                                // Redireciona após 2 segundos
+                                setTimeout(() => {
+                                    window.location.href = 'meu.html';
+                                }, 2000);
+                            },
+                            error: function() {
+                                showLoading(false);
+                                showToast('Erro ao atualizar saldo', 'error');
+                            }
+                        });
+                    },
+                    error: function() {
+                        showLoading(false);
+                        showToast('Erro ao registrar no histórico', 'error');
+                    }
+                });
+            },
+            error: function() {
+                showLoading(false);
+                showToast('Erro ao processar saque', 'error');
+            }
+        });
+    });
+    
+    // Inicializa a página
+    loadUserData();
+});
+</script>
+</body>
+</html>

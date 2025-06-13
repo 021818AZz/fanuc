@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html class="pixel-ratio-3 retina android android-5 android-5-0 watch-active-state">
+<head>
+    <meta -equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta -equiv="pragma" content="no-cache">
+    <meta -equiv="cache-control" content="no-cache">
+    <meta -equiv="expires" content="0">
+    <title>fanucss</title>
+    <!-- Incluindo Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="app3.css">
+    <link rel="stylesheet" type="text/css" href="incont3.css">
+    <link rel="stylesheet" type="text/css" href="common.css">
+    <link rel="stylesheet" type="text/css" href="dropload.css"/>
+    <script type="text/javascript" src="https://fanucss.shop/static/home/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://fanucss.shop/static/home/js/dropload.min.js"></script>
+    <script type="text/javascript" src="https://fanucss.shop/static/home/layui/layui.js"></script>
+    <style type="text/css">
+        .views{
+            z-index: 0;
+        }
+        .page-index-shop{
+            padding-bottom: 0.5rem;
+            padding: 50px 0 110px 0;
+        }
+        .bxxxx-top a {
+            font-size: 14px;
+            background: #5946cb;
+            width: 100px;
+            height: 30px;
+            display: inline-block;
+            line-height: 30px;
+            border-radius: 30px;
+            text-align: center;
+            margin-left: 10px;
+            margin-top: -2px;
+        }
+
+        .boooooss li {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 8px #ccc;
+            padding: 10px;
+            position: relative;
+        }
+
+        .sssee img {
+            width: 30px;
+            height: 30px;
+            float: left;
+            margin-left: 10px;
+            margin-right: 4px;
+        }
+
+        .sssee span {
+            color: #feb721;
+            font-size: 16px;
+            float: right;
+            margin-right: 10px;
+            text-decoration: underline;
+        }
+
+        .yyx_f p {
+            height: 25px;
+            line-height: 25px;
+            font-size: 14px;
+            padding-left: 10px;
+            color: #000;
+        }
+
+        .lqkd_r a {
+            width: 80%;
+            background: #dc4a4d;
+            height: 30px;
+            display: block;
+            text-align: center;
+            line-height: 30px;
+            margin: 10px 10%;
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .award-index-ycc a {
+            color: #e9693f;
+        }
+        
+        .footerbtn{
+            position: fixed;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            background-color: #df9301;
+            line-height: 50px;
+            color: #ffffff;
+            bottom: 60px;
+        }
+        .footerbtn_left{
+            width: calc(100% - 160px);
+            padding-left: 20px;
+        }
+        .footerbtn_r{
+            width: 160px;
+            text-align: center;
+            background-color: #e9693f;
+        }
+        .footerbtn a{
+            color: #ffffff;
+            display: block;
+            text-decoration:none;
+            font-size: 20px;
+        }
+        
+        .navbar{
+            position: absolute;
+            top:0;
+            width: 100%;
+            line-height: 40px;
+            z-index: 20;
+        }
+        .navbar .left{
+            width: 50px;
+            height: 40px;
+            position: absolute;
+            left: 10px;
+        }
+        
+        .navbar .right{
+            width: 50px;
+            height: 40px;
+            position: absolute;
+            right: 10px;
+        }
+        .robot-index-center-top1{
+            float: left;
+            background: #12b700;
+            display: block;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            padding: 0 1rem;
+            font-size: 12px;
+            color: #fff;
+            border-radius: 1rem 0 1rem 0 ;
+        }
+        .page-index-shop-top-b{
+            border-radius: 0 0 1rem 1rem;
+            padding: 8px 10px;
+            font-size: 12px;
+            background-color: #df9301;
+            color: #fff;
+            display: flex;
+        }
+        .page-index-shop-top-b .box1{
+            width: 50%;
+        }
+        
+        /* Estilos para o gráfico e progresso */
+        .progress-container {
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            line-height: 20px;
+            color: #333;
+            font-size: 12px;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 200px;
+            margin-top: 15px;
+        }
+        
+        .product-details {
+            margin-top: 10px;
+        }
+        
+        .product-details p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .countdown {
+            color: #e9693f;
+            font-weight: bold;
+        }
+        
+        .disabled {
+            background-color: #ccc !important;
+            cursor: not-allowed;
+        }
+        
+        .time-restriction {
+            font-size: 12px;
+            color: #e9693f;
+            margin-top: 5px;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close-modal:hover {
+            color: black;
+        }
+    </style>
+</head>
+<body style="background: #fafafa;">
+<div class="views">
+<div class="navbar theme-white" style="background:#df9301">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="home.html" class="external link">
+                <i class="icon iconfont icon-angleleft"></i>Voltar
+            </a>
+        </div>
+        <div class="center" style="left: -24px;">renda</div>
+        <div class="right"></div>
+    </div>
+</div>
+
+    <div class="page navbar-fixed">
+        <div class="page-index-shop">
+            <ul class="page-index-shop-ul" id="productsList">
+                <!-- Os produtos serão carregados aqui via JavaScript -->
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="footerbtn">
+    <div class="footerbtn_left">
+        <a href="#" id="totalEarnings">Coleta 08h as 22h </a>
+    </div>
+    <div class="footerbtn_r">
+        <a href="javascript:void(0);" onclick="settlement();" id="collectBtn">Receber</a>
+    </div>
+</div>
+
+<footer>
+    <div class="foot_bo">
+        <a href="home.html">
+            <img src="https://fanucss.shop/ww4.png"/>
+            <p>Início</p>
+        </a>
+    </div>
+
+    <div class="foot_bo">
+        <a href="rede.html">
+            <img src="https://fanucss.shop/ww6.png"/>
+            <p class="xz" style="color: #00A398;">renda</p>
+        </a>
+    </div>
+
+    <div class="foot_bo">
+        <a href="equipe.html">
+            <img src="https://fanucss.shop/ww5.png"/>
+            <p>Compartilhar</p>
+        </a>
+    </div>
+
+    <div class="foot_bo">
+        <a href="meu.html">
+            <img src="https://fanucss.shop/ww7.png"/>
+            <p>Meu</p>
+        </a>
+    </div>
+</footer>
+
+<!-- Modal para mensagens -->
+<div id="messageModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <p id="modalMessage"></p>
+    </div>
+</div>
+
+<script>
+    // Variáveis globais
+    let userId = localStorage.getItem("user_id");
+    let purchasedProducts = [];
+    let totalEarnings = 0;
+    let canCollect = false;
+    let nextCollectionTime = null;
+    let countdownInterval = null;
+    
+    // Função para mostrar modal
+    function showModal(message) {
+        const modal = document.getElementById('messageModal');
+        const modalMessage = document.getElementById('modalMessage');
+        modalMessage.textContent = message;
+        modal.style.display = 'block';
+        
+        // Fechar modal quando clicar no X
+        document.querySelector('.close-modal').onclick = function() {
+            modal.style.display = 'none';
+        }
+        
+        // Fechar modal quando clicar fora
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    }
+    
+    // Função para carregar os produtos comprados
+    async function loadPurchasedProducts() {
+        if (!userId) {
+            showModal("Usuário não identificado. Faça login novamente.");
+            return;
+        }
+        
+        try {
+            const response = await fetch(`https://api-wped.onrender.com/produto?userId=${userId}`);
+            if (!response.ok) {
+                throw new Error('Erro ao carregar produtos');
+            }
+            
+            purchasedProducts = await response.json();
+            displayProducts();
+            calculateTotalEarnings();
+            checkCollectionAvailability();
+        } catch (error) {
+            console.error('Erro ao carregar produtos:', error);
+            showModal('Erro ao carregar produtos. Tente novamente.');
+        }
+    }
+    
+    // Função para exibir os produtos na página
+    function displayProducts() {
+        const productsList = document.getElementById('productsList');
+        productsList.innerHTML = '';
+        
+        if (purchasedProducts.length === 0) {
+            productsList.innerHTML = '<li style="text-align: center; padding: 20px;">Nenhum produto comprado ainda</li>';
+            return;
+        }
+        
+        purchasedProducts.forEach(product => {
+            const daysPassed = calculateDaysPassed(product.dataCompra);
+            const totalDays = product.prazo;
+            const progressPercent = Math.min((daysPassed / totalDays) * 100, 100);
+            const earningsCollected = product.renda_diaria * daysPassed;
+            
+            // Verificar se já foi coletado hoje
+            const today = new Date().toDateString();
+            const lastCollection = product.lastCollection ? new Date(product.lastCollection).toDateString() : null;
+            const alreadyCollectedToday = lastCollection === today;
+            
+            const productItem = document.createElement('li');
+            productItem.className = 'boooooss';
+            productItem.innerHTML = `
+                <div class="sssee">
+                    <img src="https://fanucss.shop/uploads/image/20250610/5a1aa1fa6b66d41ab44eccb61555df11.jpg"/>
+                    <span>${product.produto}</span>
+                </div>
+                <div class="product-details">
+                    <p>Preço: KZ ${product.preco.toLocaleString('pt-BR')}</p>
+                    <p>Renda diária: KZ ${product.renda_diaria.toLocaleString('pt-BR')}</p>
+                    <p>Prazo: ${product.prazo} dias</p>
+                    <p>Renda total: KZ ${product.renda_total.toLocaleString('pt-BR')}</p>
+                    <p>Renda coletada: KZ ${earningsCollected.toLocaleString('pt-BR')}</p>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                            <div class="progress-text">${Math.floor(progressPercent)}% (${daysPassed}/${totalDays} dias)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="chart-${product.id}"></canvas>
+                    </div>
+                    
+                    <div class="time-restriction" id="restriction-${product.id}">
+                        ${alreadyCollectedToday ? 'Você já coletou a renda hoje' : 'Próxima coleta disponível das 8h às 22h'}
+                    </div>
+                    
+                    <div class="lqkd_r">
+                        <a href="javascript:void(0);" onclick="collectDailyEarnings('${product.id}')" 
+                           class="collect-btn ${alreadyCollectedToday ? 'disabled' : ''}" 
+                           id="collect-${product.id}" 
+                           ${alreadyCollectedToday ? 'disabled' : ''}>
+                           ${alreadyCollectedToday ? 'Já recebido' : 'Receber KZ ' + product.renda_diaria.toLocaleString('pt-BR')}
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            productsList.appendChild(productItem);
+            
+            // Criar gráfico para este produto
+            createChart(product.id, daysPassed, totalDays);
+        });
+    }
+    
+    // Função para criar gráfico de progresso
+    function createChart(productId, daysPassed, totalDays) {
+        const ctx = document.getElementById(`chart-${productId}`).getContext('2d');
+        
+        const labels = [];
+        const data = [];
+        
+        for (let i = 1; i <= totalDays; i++) {
+            labels.push(`Dia ${i}`);
+            data.push(i <= daysPassed ? 1 : 0);
+        }
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Dias completados',
+                    data: data,
+                    backgroundColor: data.map(val => val === 1 ? '#4CAF50' : '#f0f0f0'),
+                    borderColor: data.map(val => val === 1 ? '#388E3C' : '#ddd'),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        display: false,
+                        beginAtZero: true,
+                        max: 1
+                    },
+                    x: {
+                        display: false
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y === 1 ? 'Dia completado' : 'Dia pendente';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Função para calcular dias passados desde a compra
+    function calculateDaysPassed(purchaseDate) {
+        const purchaseTime = new Date(purchaseDate).getTime();
+        const now = new Date().getTime();
+        const diffTime = now - purchaseTime;
+        return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    }
+    
+    // Função para calcular o total ganho
+    function calculateTotalEarnings() {
+        totalEarnings = purchasedProducts.reduce((sum, product) => {
+            const daysPassed = calculateDaysPassed(product.dataCompra);
+            return sum + (product.renda_diaria * daysPassed);
+        }, 0);
+        
+        document.getElementById('totalEarnings').textContent = `8h  ${totalEarnings.toLocaleString('pt-BR')}`;
+    }
+    
+    // Função para verificar se pode coletar (entre 8h e 22h)
+    function checkCollectionAvailability() {
+        const now = new Date();
+        const currentHour = now.getHours();
+        canCollect = currentHour >= 8 && currentHour < 22;
+        
+        const collectBtn = document.getElementById('collectBtn');
+        
+        if (canCollect) {
+            collectBtn.classList.remove('disabled');
+            collectBtn.textContent = 'Receber';
+        } else {
+            collectBtn.classList.add('disabled');
+            
+            // Calcular próxima hora de coleta (8h do próximo dia)
+            nextCollectionTime = new Date();
+            if (currentHour >= 22) {
+                nextCollectionTime.setDate(nextCollectionTime.getDate() + 1);
+            }
+            nextCollectionTime.setHours(8, 0, 0, 0);
+            
+            // Iniciar contagem regressiva
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+    }
+    
+    // Função para atualizar a contagem regressiva
+    function updateCountdown() {
+        const now = new Date();
+        const diff = nextCollectionTime - now;
+        
+        if (diff <= 0) {
+            clearInterval(countdownInterval);
+            checkCollectionAvailability();
+            return;
+        }
+        
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        
+        document.getElementById('collectBtn').textContent = 
+            `Próxima coleta em ${hours}h ${minutes}m ${seconds}s`;
+    }
+    
+    // Função para coletar renda diária de um produto específico
+    async function collectDailyEarnings(productId) {
+        if (!canCollect) {
+            showModal('A coleta só está disponível entre 8h e 22h.');
+            return;
+        }
+        
+        const product = purchasedProducts.find(p => p.id === productId);
+        if (!product) return;
+        
+        // Verificar se já foi coletado hoje
+        const today = new Date().toDateString();
+        const lastCollection = product.lastCollection ? new Date(product.lastCollection).toDateString() : null;
+        if (lastCollection === today) {
+            showModal('Você já coletou a renda deste produto hoje.');
+            return;
+        }
+        
+        try {
+            // Atualizar o último dia de coleta no produto
+            const response = await fetch(`https://api-wped.onrender.com/produto/${productId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    lastCollection: new Date().toISOString()
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error('Erro ao registrar coleta');
+            }
+            
+            // Obter o saldo atual do usuário
+            const userResponse = await fetch(`https://api-wped.onrender.com/user/${userId}`);
+            if (!userResponse.ok) {
+                throw new Error('Erro ao obter dados do usuário');
+            }
+            
+            const userData = await userResponse.json();
+            const newBalance = (userData.saldo || 0) + product.renda_diaria;
+            
+            // Atualizar o saldo do usuário
+            const updateResponse = await fetch(`https://api-wped.onrender.com/user/${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    saldo: newBalance
+                })
+            });
+            
+            if (!updateResponse.ok) {
+                throw new Error('Erro ao atualizar saldo');
+            }
+            
+            showModal(`Você recebeu KZ ${product.renda_diaria.toLocaleString('pt-BR')} com sucesso!`);
+            
+            // Desabilitar o botão de coleta para este produto
+            const collectBtn = document.getElementById(`collect-${productId}`);
+            if (collectBtn) {
+                collectBtn.classList.add('disabled');
+                collectBtn.textContent = 'Já recebido';
+                collectBtn.disabled = true;
+                
+                // Atualizar a mensagem de restrição
+                const restrictionMsg = document.getElementById(`restriction-${productId}`);
+                if (restrictionMsg) {
+                    restrictionMsg.textContent = 'Você já coletou a renda hoje';
+                }
+            }
+            
+            // Atualizar o total de ganhos
+            calculateTotalEarnings();
+        } catch (error) {
+            console.error('Erro ao coletar renda:', error);
+            showModal('Erro ao coletar renda. Tente novamente.');
+        }
+    }
+    
+    // Função para coletar todos os rendimentos disponíveis
+    async function settlement() {
+        if (!canCollect) {
+            showModal('A coleta só está disponível entre 8h e 22h.');
+            return;
+        }
+        
+        if (purchasedProducts.length === 0) {
+            showModal('Nenhum produto para coletar renda.');
+            return;
+        }
+        
+        try {
+            let totalCollected = 0;
+            const today = new Date().toDateString();
+            const productsToCollect = [];
+            
+            // Verificar quais produtos podem ser coletados
+            for (const product of purchasedProducts) {
+                const lastCollection = product.lastCollection ? new Date(product.lastCollection).toDateString() : null;
+                if (lastCollection !== today) {
+                    productsToCollect.push(product);
+                    totalCollected += product.renda_diaria;
+                }
+            }
+            
+            if (productsToCollect.length === 0) {
+                showModal('Você já coletou a renda de todos os produtos hoje.');
+                return;
+            }
+            
+            // Atualizar todos os produtos que podem ser coletados
+            for (const product of productsToCollect) {
+                await fetch(`https://api-wped.onrender.com/produto/${product.id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        lastCollection: new Date().toISOString()
+                    })
+                });
+            }
+            
+            // Obter o saldo atual do usuário
+            const userResponse = await fetch(`https://api-wped.onrender.com/user/${userId}`);
+            if (!userResponse.ok) {
+                throw new Error('Erro ao obter dados do usuário');
+            }
+            
+            const userData = await userResponse.json();
+            const newBalance = (userData.saldo || 0) + totalCollected;
+            
+            // Atualizar o saldo do usuário
+            const updateResponse = await fetch(`https://api-wped.onrender.com/user/${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    saldo: newBalance
+                })
+            });
+            
+            if (!updateResponse.ok) {
+                throw new Error('Erro ao atualizar saldo');
+            }
+            
+            showModal(`Você recebeu KZ ${totalCollected.toLocaleString('pt-BR')} no total!`);
+            
+            // Atualizar a interface para todos os produtos coletados
+            productsToCollect.forEach(product => {
+                const collectBtn = document.getElementById(`collect-${product.id}`);
+                if (collectBtn) {
+                    collectBtn.classList.add('disabled');
+                    collectBtn.textContent = 'Já recebido';
+                    collectBtn.disabled = true;
+                    
+                    // Atualizar a mensagem de restrição
+                    const restrictionMsg = document.getElementById(`restriction-${product.id}`);
+                    if (restrictionMsg) {
+                        restrictionMsg.textContent = 'Você já coletou a renda hoje';
+                    }
+                }
+            });
+            
+            // Atualizar o total de ganhos
+            calculateTotalEarnings();
+        } catch (error) {
+            console.error('Erro ao coletar renda:', error);
+            showModal('Erro ao coletar renda. Tente novamente.');
+        }
+    }
+    
+    // Carregar produtos quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+        loadPurchasedProducts();
+    });
+</script>
+</body>
+</html>

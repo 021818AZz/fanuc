@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Investimentos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 15px;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: #df9301;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            z-index: 10;
+        }
+        
+        .back-button:hover {
+            background-color: #c78200;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #df9301, #fc5f2e);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .invest-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+        
+        .invest-table thead th {
+            background-color: #df9301;
+            color: white;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .invest-table thead th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+        
+        .invest-table thead th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+        
+        .invest-table tbody tr {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .invest-table tbody tr:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .invest-table td {
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 13px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .invest-table td:first-child {
+            border-left: 1px solid #f0f0f0;
+            border-radius: 8px 0 0 8px;
+        }
+        
+        .invest-table td:last-child {
+            border-right: 1px solid #f0f0f0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .product-name {
+            font-weight: bold;
+            color: #df9301;
+        }
+        
+        .product-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+        
+        .price {
+            font-weight: bold;
+        }
+        
+        .daily-income {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .total-income {
+            color: #2196F3;
+            font-weight: bold;
+        }
+        
+        .period {
+            background-color: #fdfaf4;
+            color: #df9301;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: inline-block;
+        }
+        
+        .invest-btn {
+            background-color: #df9301;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .invest-btn:hover {
+            background-color: #c78200;
+        }
+        
+        .quota {
+            font-size: 11px;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .invest-table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .header h1 {
+                font-size: 18px;
+            }
+            
+            .header p {
+                font-size: 12px;
+            }
+            
+            .invest-table td, .invest-table th {
+                padding: 8px 5px;
+                font-size: 12px;
+            }
+            
+            .invest-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            
+            .period {
+                font-size: 11px;
+                padding: 2px 6px;
+            }
+        }
+        
+        /* Modal de detalhes */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .modal-body {
+            margin-bottom: 20px;
+        }
+        
+        .product-info {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .product-image-modal {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .product-details {
+            flex: 1;
+        }
+        
+        .product-name-modal {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #df9301;
+        }
+        
+        .product-price-modal {
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .product-daily-income-modal {
+            font-size: 14px;
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+        
+        .product-total-income-modal {
+            font-size: 14px;
+            color: #2196F3;
+            margin-bottom: 5px;
+        }
+        
+        .product-period-modal {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .cancel-btn {
+            background-color: #ccc;
+            color: #333;
+        }
+        
+        .confirm-btn {
+            background-color: #df9301;
+            color: #fff;
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .toast.success {
+            background-color: #121412;
+        }
+        
+        .toast.error {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-button" onclick="window.location.href='home.html'">Voltar</button>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Tabela de Investimentos</h1>
+            <p>Escolha o melhor plano para você e comece a ganhar hoje mesmo</p>
+        </div>
+        
+        <table class="invest-table">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                    <th>Renda Diária</th>
+                    <th>Renda Total</th>
+                    <th>Período</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="product-name">fanucss-1</div>
+                        <img src="https://fanucss.shop/uploads/image/20250610/5a1aa1fa6b66d41ab44eccb61555df11.jpg" class="product-image">
+                    </td>
+                    <td class="price">KZ 2.700</td>
+                    <td class="daily-income">KZ 270</td>
+                    <td class="total-income">KZ 24.300</td>
+                    <td><span class="period">90 Dias</span></td>
+                    <td>
+                        <button class="invest-btn" onclick="showProductModal('fanucss-1', 2700, 270, 24300, '90 Dias', 'https://fanucss.shop/uploads/image/20250610/5a1aa1fa6b66d41ab44eccb61555df11.jpg')">Investir</button>
+                        <div class="quota">Cota 0/99</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="product-name">fanucss-2</div>
+                        <img src="https://fanucss.shop/uploads/image/20250610/a2baf99d68d61a3ef9b3a2f0e0809929.jpg" class="product-image">
+                    </td>
+                    <td class="price">KZ 15.000</td>
+                    <td class="daily-income">KZ 1.500</td>
+                    <td class="total-income">KZ 135.000</td>
+                    <td><span class="period">90 Dias</span></td>
+                    <td>
+                        <button class="invest-btn" onclick="showProductModal('fanucss-2', 15000, 1500, 135000, '90 Dias', 'https://fanucss.shop/uploads/image/20250610/a2baf99d68d61a3ef9b3a2f0e0809929.jpg')">Investir</button>
+                        <div class="quota">Cota 0/99</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="product-name">fanucss-3</div>
+                        <img src="https://fanucss.shop/uploads/image/20250610/3442ce0017912fdbf0a184aeaf86703b.jpg" class="product-image">
+                    </td>
+                    <td class="price">KZ 55.000</td>
+                    <td class="daily-income">KZ 5.500</td>
+                    <td class="total-income">KZ 495.000</td>
+                    <td><span class="period">90 Dias</span></td>
+                    <td>
+                        <button class="invest-btn" onclick="showProductModal('fanucss-3', 55000, 5500, 495000, '90 Dias', 'https://fanucss.shop/uploads/image/20250610/3442ce0017912fdbf0a184aeaf86703b.jpg')">Investir</button>
+                        <div class="quota">Cota 0/99</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="product-name">fanucss-4</div>
+                        <img src="https://fanucss.shop/uploads/image/20250610/d17efd05442633495ab5336e321591e1.jpg" class="product-image">
+                    </td>
+                    <td class="price">KZ 196.000</td>
+                    <td class="daily-income">KZ 19.600</td>
+                    <td class="total-income">KZ 1.764.000</td>
+                    <td><span class="period">90 Dias</span></td>
+                    <td>
+                        <button class="invest-btn" onclick="showProductModal('fanucss-4', 196000, 19600, 1764000, '90 Dias', 'https://fanucss.shop/uploads/image/20250610/d17efd05442633495ab5336e321591e1.jpg')">Investir</button>
+                        <div class="quota">Cota 0/99</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="product-name">fanucss-5</div>
+                        <img src="https://fanucss.shop/uploads/image/20250610/593162771dd01c07c59878f99fbcab17.jpg" class="product-image">
+                    </td>
+                    <td class="price">KZ 500.000</td>
+                    <td class="daily-income">KZ 50.000</td>
+                    <td class="total-income">KZ 4.500.000</td>
+                    <td><span class="period">90 Dias</span></td>
+                    <td>
+                        <button class="invest-btn" onclick="showProductModal('fanucss-5', 500000, 50000, 4500000, '90 Dias', 'https://fanucss.shop/uploads/image/20250610/593162771dd01c07c59878f99fbcab17.jpg')">Investir</button>
+                        <div class="quota">Cota 0/99</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de Produto -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Detalhes do Investimento</div>
+                <span class="close-modal" onclick="hideModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="product-info">
+                    <img id="modalProductImage" class="product-image-modal" src="" alt="Produto">
+                    <div class="product-details">
+                        <div class="product-name-modal" id="modalProductName"></div>
+                        <div class="product-price-modal">Preço: <span id="modalProductPrice"></span></div>
+                        <div class="product-daily-income-modal">Renda Diária: <span id="modalProductDailyIncome"></span></div>
+                        <div class="product-total-income-modal">Renda Total: <span id="modalProductTotalIncome"></span></div>
+                        <div class="product-period-modal">Período: <span id="modalProductPeriod"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn cancel-btn" onclick="hideModal()">Cancelar</button>
+                <button class="modal-btn confirm-btn" onclick="confirmPurchase()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Variáveis globais
+        let currentProductData = null;
+        
+        // Função para mostrar o modal do produto
+        function showProductModal(name, price, dailyIncome, totalIncome, period, imageUrl) {
+            currentProductData = {
+                name: name,
+                price: price,
+                dailyIncome: dailyIncome,
+                totalIncome: totalIncome,
+                period: period,
+                imageUrl: imageUrl
+            };
+            
+            // Preencher os dados do modal
+            document.getElementById('modalProductName').textContent = name;
+            document.getElementById('modalProductPrice').textContent = `KZ ${price.toLocaleString('pt-BR')}`;
+            document.getElementById('modalProductDailyIncome').textContent = `KZ ${dailyIncome.toLocaleString('pt-BR')}`;
+            document.getElementById('modalProductTotalIncome').textContent = `KZ ${totalIncome.toLocaleString('pt-BR')}`;
+            document.getElementById('modalProductPeriod').textContent = period;
+            document.getElementById('modalProductImage').src = imageUrl;
+            
+            // Mostrar o modal
+            document.getElementById('productModal').style.display = 'flex';
+        }
+        
+        // Função para esconder o modal
+        function hideModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+        
+        // Função para confirmar a compra
+        function confirmPurchase() {
+            // Aqui você pode adicionar a lógica para processar o investimento
+            showToast('Investa agora na sua pagina principal!', 'success');
+            hideModal();
+            
+            // Simulação: você pode enviar esses dados para seu backend
+            console.log('Investimento confirmado:', currentProductData);
+        }
+        
+        // Função para mostrar toast
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.style.display = 'block';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Fechar modal ao clicar fora
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target === modal) {
+                hideModal();
+            }
+        }
+    </script>
+</body>
+</html>

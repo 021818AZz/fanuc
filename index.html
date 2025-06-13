@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta -equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>fanucss</title>
+    <meta -equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="wap-font-scale" content="no">
+    <link rel="stylesheet" href="frame1.css">
+    <link rel="stylesheet" href="app1.css">
+    <link rel="stylesheet" href="incont1.html">
+    
+    <style>
+        /* Estilos gerais */
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #FFDD00;
+        }
+        
+        /* Estilos do seletor de idioma */
+        select {
+            background-color: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            padding: 5px;
+            font-size: 14px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        
+        /* Estilos da máscara de notificação */
+        .z-mask {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 99999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .notice {
+            position: absolute;
+            left: 5%;
+            top: 5%;
+            width: 82%;
+            min-height: 20rem;
+            padding: 1rem 4%;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+        
+        .notice-txt {
+            width: 100%;
+            word-wrap: break-word;
+            word-break: normal;
+            text-align: center;
+        }
+        
+        .notice-txt p {
+            width: 100%;
+            line-height: 1.2rem;
+            font-size: 14px;
+            color: #333;
+            margin-top: 5px;
+        }
+        
+        .notice-tit {
+            width: 100%;
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 0.6rem;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .notice-btn {
+            width: 80%;
+            margin: 2rem auto 0;
+            height: 2.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #fff;
+            border-radius: 8px;
+            background-color: #3FDADC;
+            cursor: pointer;
+        }
+        
+        /* Estilos do background animado */
+        .background {
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        .background span {
+            width: 20vmin;
+            height: 20vmin;
+            border-radius: 20vmin;
+            backface-visibility: hidden;
+            position: absolute;
+            animation-name: move;
+            animation-duration: 6s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            z-index: -1;
+        }
+        
+        /* Posições específicas para cada elemento do background */
+        .background span:nth-child(1) {
+            color: #acf0ff;
+            top: 44%;
+            left: 97%;
+            animation-duration: 15s;
+            animation-delay: -13.8s;
+            transform-origin: 11vw -22vh;
+            box-shadow: 40vmin 0 10.12735945vmin currentColor;
+        }
+        
+        .background span:nth-child(2) {
+            color: #acf0ff;
+            top: 93%;
+            left: 8%;
+            animation-duration: 13.8s;
+            animation-delay: -10.9s;
+            transform-origin: 10vw 23vh;
+            box-shadow: 40vmin 0 12.7346672971vmin currentColor;
+        }
+        
+        /* [Continuação dos estilos dos spans...] */
+        
+        /* Estilos do botão de atendimento */
+        .kefu {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            position: fixed;
+            top: 630px;
+            right: 10px;
+            background-color: #fff;
+            z-index: 9999;
+            -webkit-animation: ani 2s linear infinite;
+        }
+        
+        /* Estilos do logo */
+        .login_logo1 {
+            width: 100%;
+            height: 25%;
+            text-align: center;
+            display: flex;
+            align-items: center;
+        }
+        
+        .login_logo1 img {
+            width: 23rem;
+            height: 7rem;
+            transform: scale(1.1);
+            align-items: center;
+            margin: auto;
+        }
+        
+        /* Estilos do toast modal */
+        .toast-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .toast-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 280px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            animation: toastFadeIn 0.3s ease-out;
+            position: relative;
+            margin: auto;
+            transform: translateY(0);
+        }
+        
+        .toast-icon {
+            font-size: 42px;
+            margin-bottom: 15px;
+            line-height: 1;
+            text-align: center;
+        }
+        
+        .toast-message {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        .toast-close {
+            background-color: #0fac77;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            width: 100%;
+            max-width: 120px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .toast-success .toast-icon {
+            color: #4CAF50;
+        }
+        
+        .toast-error .toast-icon {
+            color: #F44336;
+        }
+        
+        /* Animação do background */
+        @keyframes move {
+            100% {
+                transform: translate3d(0, 0, 1px) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Toast Modal Centralizado -->
+    <div id="toastModal" class="toast-modal" style="display: none;">
+        <div id="toastContent" class="toast-content">
+            <div id="toastIcon" class="toast-icon"></div>
+            <div id="toastMessage" class="toast-message"></div>
+            <button id="toastClose" class="toast-close">OK</button>
+        </div>
+    </div>
+
+    <div class="login_logo1">
+        <img src="https://fanucss.shop/fan.jpg"/>
+    </div>
+
+    <div class="login_form">
+        <form name="form" method="post" id="form">
+            <div class="input-container">
+                <div class="input-control">
+                    <i class="icon iconfont icon-mobile">+244</i>
+                    <input 
+                        class="inputfield iconfont" 
+                        style="padding-left:80px" 
+                        type="text" 
+                        id="mobile" 
+                        name="mobile" 
+                        placeholder="Número de Celular" 
+                        value="" 
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9);" 
+                        maxlength="9"
+                        required
+                        pattern="\d{9}" 
+                        title="Please enter a valid number with 9 digits."
+                    >
+                </div>
+            </div>
+            
+            <div class="input-container">
+                <div class="input-control">
+                    <i class="icon iconfont icon-mima"></i>
+                    <input class="inputfield" type="password" id="password" name="password" placeholder="Senha">
+                </div>
+            </div>
+            
+            <div class="row loginfield" style="padding-top: 10px">
+                <div style="display: inline-block;color:#fff">
+                    <input type="checkbox" id="remember_password">
+                    Lembrar Senha
+                </div>
+            </div>
+            
+            <div class="center">
+                <div class="space-20"></div>
+                <a class="btn_submit_my login_la" style="box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">Entrar</a>
+            </div>
+        </form>
+        
+        <a href="register.html" class="login_laa" style="margin-top: 1rem; box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">Registrador</a>
+    </div>
+
+    <div class="kefu">
+        <a href="https://t.me/+MRz9ZK3Nblo4YjJk"><img src="https://fanucss.shop/static/home/img/groupService1.png" alt=""></a>
+    </div>
+
+    <div class="z-mask" style="display: none;"></div>
+
+    <div class="background">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <script type="text/javascript" src="/static/home/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/static/home/js/layer.js"></script>
+    
+    <script>
+        // URLs dos GIFs
+        const SUCCESS_GIF = 'https://img.icons8.com/?size=100&id=tROT3Lgaxo7Q&format=gif';
+        const ERROR_GIF = 'https://img.icons8.com/?size=100&id=iQ230Rs1gOvf&format=gif';
+        
+        /**
+         * Mostra notificação personalizada
+         * @param {string} title - Título da notificação
+         * @param {string} message - Mensagem da notificação
+         * @param {boolean} isSuccess - Se é uma notificação de sucesso
+         */
+        function showNotification(title, message, isSuccess) {
+            const mask = document.querySelector('.z-mask');
+            const notice = document.createElement('div');
+            notice.className = 'notice';
+            notice.innerHTML = `
+                <div class="notice-tit">${title}</div>
+                <div class="notice-txt">
+                    <p>${message}</p>
+                    <img src="${isSuccess ? SUCCESS_GIF : ERROR_GIF}" width="50" height="50">
+                </div>
+                <div class="notice-btn" id="noticeButton">OK</div>
+            `;
+            mask.innerHTML = '';
+            mask.appendChild(notice);
+            mask.style.display = 'flex';
+            
+            document.getElementById('noticeButton').onclick = function() {
+                mask.style.display = 'none';
+                if (isSuccess) {
+                    window.location.href = 'home.html';
+                }
+            };
+        }
+
+        /**
+         * Mostra toast notification
+         * @param {string} message - Mensagem a ser exibida
+         * @param {string} type - Tipo de toast ('success' ou 'error')
+         */
+        function showToast(message, type) {
+            const toastModal = document.getElementById('toastModal');
+            const toastContent = document.getElementById('toastContent');
+            const toastIcon = document.getElementById('toastIcon');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            // Configura o conteúdo do toast
+            toastContent.className = 'toast-content ' + type;
+            toastIcon.innerHTML = `<img src="${type === 'success' ? SUCCESS_GIF : ERROR_GIF}" width="50" height="50">`;
+            toastMessage.textContent = message;
+            
+            // Mostra o modal
+            toastModal.style.display = 'flex';
+            
+            // Configura o botão de fechar
+            document.getElementById('toastClose').onclick = function() {
+                toastModal.style.display = 'none';
+            };
+        }
+
+        /**
+         * Valida número de telefone (9 dígitos)
+         * @param {string} phone - Número de telefone a validar
+         * @returns {boolean} - Retorna true se for válido
+         */
+        function validatePhone(phone) {
+            return /^\d{9}$/.test(phone);
+        }
+
+        /**
+         * Função de login com API
+         */
+        function login() {
+            const phoneInput = document.getElementById('mobile');
+            const passwordInput = document.getElementById('password');
+            const btnLogin = document.querySelector('.btn_submit_my');
+            
+            const phone = phoneInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            // Validação dos campos
+            if (!phone || !password) {
+                showToast('Por favor, preencha todos os campos.', 'error');
+                return;
+            }
+            
+            if (!validatePhone(phone)) {
+                showToast('Número inválido. Deve conter 9 dígitos.', 'error');
+                return;
+            }
+            
+            // Mostrar estado de carregamento
+            if (btnLogin) {
+                btnLogin.disabled = true;
+                btnLogin.textContent = 'Carregando...';
+            }
+            
+            // Chamada para a API
+            fetch('https://api-wped.onrender.com/user?telefone=' + phone)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro na resposta da API');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Verifica se data é um array (pode ser um objeto)
+                    const users = Array.isArray(data) ? data : [data];
+                    
+                    if (users.length === 0 || !users[0]) {
+                        showToast('Usuário não existe, cadastre-se.', 'error');
+                        return;
+                    }
+                    
+                    const user = users.find(u => u.senha === password);
+                    
+                    if (user) {
+                        showNotification('Sucesso!', 'Login realizado com sucesso!', true);
+                        localStorage.setItem("user_data", JSON.stringify(user));
+                        localStorage.setItem("user_id", user.id);
+                        
+                        // Salvar credenciais se o checkbox estiver marcado
+                        const rememberCheckbox = document.getElementById('remember_password');
+                        if (rememberCheckbox && rememberCheckbox.checked) {
+                            localStorage.setItem('remember_credentials', 'true');
+                            localStorage.setItem('saved_phone', phone);
+                            localStorage.setItem('saved_password', password);
+                        }
+                    } else {
+                        showNotification('Erro', 'Senha incorreta.', false);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    showNotification('Erro', 'Erro ao conectar com o servidor.', false);
+                })
+                .finally(() => {
+                    if (btnLogin) {
+                        btnLogin.disabled = false;
+                        btnLogin.textContent = 'Entrar';
+                    }
+                });
+        }
+
+        // Configuração dos eventos quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Evento de clique no botão de login
+            document.querySelector('.btn_submit_my').addEventListener('click', login);
+            
+            // Formatação do campo de telefone (apenas números, máximo 9 dígitos)
+            const phoneInput = document.getElementById('mobile');
+            const passwordInput = document.getElementById('password');
+            
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    // Remove tudo que não for dígito
+                    this.value = this.value.replace(/\D/g, '');
+                    // Limita a 9 caracteres
+                    if (this.value.length > 9) {
+                        this.value = this.value.slice(0, 9);
+                    }
+                });
+                
+                // Impede colar texto não numérico
+                phoneInput.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    const text = (e.clipboardData || window.clipboardData).getData('text');
+                    const numbers = text.replace(/\D/g, '');
+                    const currentValue = this.value;
+                    const newValue = currentValue + numbers;
+                    this.value = newValue.slice(0, 9);
+                });
+            }
+            
+            // Verificar se há credenciais salvas
+            const rememberCheckbox = document.getElementById('remember_password');
+            if (rememberCheckbox && localStorage.getItem('remember_credentials') === 'true') {
+                rememberCheckbox.checked = true;
+                const savedPhone = localStorage.getItem('saved_phone');
+                const savedPassword = localStorage.getItem('saved_password');
+                if (savedPhone && phoneInput) phoneInput.value = savedPhone;
+                if (savedPassword && passwordInput) passwordInput.value = savedPassword;
+            }
+            
+            // Salvar credenciais se o checkbox estiver marcado
+            if (rememberCheckbox) {
+                rememberCheckbox.addEventListener('change', function() {
+                    if (!this.checked) {
+                        localStorage.removeItem('remember_credentials');
+                        localStorage.removeItem('saved_phone');
+                        localStorage.removeItem('saved_password');
+                    }
+                });
+            }
+            
+            // Configurar o botão de fechar do toast
+            document.getElementById('toastClose').addEventListener('click', function() {
+                document.getElementById('toastModal').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="pixel-ratio-3 retina android android-5 android-5-0 watch-active-state">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title>Conta Bancária</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .navbar {
+            background-color: #df9301;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        .page-content {
+            padding: 20px;
+        }
+        .list-block ul {
+            list-style: none;
+            padding: 0;
+        }
+        .list-block li {
+            background: white;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .item-title.label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .item-input input, .item-input select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .baocuss a {
+            display: block;
+            background: #df9301;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .card-title {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .card-edit {
+            color: #df9301;
+            cursor: pointer;
+        }
+        .card-details div {
+            margin-bottom: 8px;
+        }
+        .card-label {
+            font-weight: bold;
+            color: #666;
+        }
+        .hidden {
+            display: none;
+        }
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 18px;
+            z-index: 1000;
+        }
+        /* Notificação estilo toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        .toast.success {
+            background-color: #4CAF50;
+        }
+        .toast.error {
+            background-color: #F44336;
+        }
+        .toast.warning {
+            background-color: #FF9800;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Voltar</a>
+    <div style="flex-grow: 1; text-align: center;">Conta de Saque</div>
+</div>
+
+<div class="page-content">
+    <form id="accountForm">
+        <div class="list-block">
+            <ul>
+                <li>
+                    <div class="item-title.label">Nome completo</div>
+                    <div class="item-input">
+                        <input type="text" id="name" required>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-title.label">Tipo de banco</div>
+                    <div class="item-input">
+                        <select id="bankName" required>
+                            <option value="BAI">BAI</option>
+                            <option value="BFA">BFA</option>
+                            <option value="BIC">BIC</option>
+                            <option value="ATL">ATL</option>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-title.label">Conta bancária</div>
+                    <div class="item-input">
+                        <input type="text" id="account" maxlength="21" 
+                               oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="baocuss">
+            <a href="#" id="saveBtn">Salvar</a>
+        </div>
+        <p style='text-align:center; color:red;'>Por favor, preencha suas informações reais para evitar falhas na retirada.</p>
+    </form>
+
+    <div class="card hidden" id="infoCard">
+        <div class="card-header">
+            <div class="card-title">Informações Bancárias</div>
+            <div class="card-edit" id="editBtn">
+                <i class="fas fa-edit"></i> Editar
+            </div>
+        </div>
+        <div class="card-details">
+            <div><span class="card-label">Nome:</span> <span id="cardName"></span></div>
+            <div><span class="card-label">Banco:</span> <span id="cardBank"></span></div>
+            <div><span class="card-label">Conta:</span> <span id="cardAccount"></span></div>
+        </div>
+    </div>
+</div>
+
+<!-- Elemento para notificações -->
+<div id="toast" class="toast"></div>
+
+<script>
+$(document).ready(function() {
+    // URL da sua API JSON Server
+    const API_URL = 'https://api-wped.onrender.com/iban';
+    
+    // Função para mostrar notificação
+    function showToast(message, type = 'success', duration = 3000) {
+        const toast = $('#toast');
+        toast.removeClass('success error warning').addClass(type).text(message);
+        toast.addClass('show');
+        
+        setTimeout(() => {
+            toast.removeClass('show');
+        }, duration);
+    }
+
+    // Obtém o ID do usuário do localStorage
+    function getUserId() {
+        const userData = localStorage.getItem('user_data');
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                return user.id || null;
+            } catch (e) {
+                console.error("Erro ao parsear user data:", e);
+                return null;
+            }
+        }
+        // Fallback para o user_id armazenado separadamente (para compatibilidade)
+        return localStorage.getItem('user_id') || null;
+    }
+
+    // Verifica se há dados salvos para o usuário atual
+    function loadSavedData() {
+        const userId = getUserId();
+        if (!userId) {
+            showToast('Usuário não identificado', 'error');
+            return;
+        }
+
+        // Mostra loading enquanto busca os dados
+        $('body').append('<div class="loading">Carregando...</div>');
+
+        $.get(API_URL + '?userId=' + userId, function(data) {
+            $('.loading').remove();
+            
+            if (data && data.length > 0) {
+                const latest = data[data.length - 1]; // Pega o último registro
+                $('#name').val(latest.name);
+                $('#bankName').val(latest.bankName);
+                $('#account').val(latest.account);
+                
+                $('#cardName').text(latest.name);
+                $('#cardBank').text(latest.bankName);
+                $('#cardAccount').text(latest.account);
+                $('#infoCard').removeClass('hidden');
+                
+                showToast('Dados bancários carregados', 'success');
+            }
+        }).fail(function() {
+            $('.loading').remove();
+            console.log("Não foi possível carregar dados da API");
+            showToast('Erro ao carregar dados', 'error');
+        });
+    }
+    
+    // Carrega os dados ao iniciar
+    loadSavedData();
+
+    // Botão Salvar
+    $('#saveBtn').click(function(e) {
+        e.preventDefault();
+        
+        const userId = getUserId();
+        if (!userId) {
+            showToast('Usuário não identificado. Faça login novamente.', 'error');
+            return;
+        }
+
+        const name = $('#name').val().trim();
+        const bankName = $('#bankName').val();
+        const account = $('#account').val().trim();
+
+        // Validações
+        if (!name) {
+            showToast('Por favor, preencha o nome completo', 'warning');
+            return;
+        }
+
+        if (!account || account.length !== 21) {
+            showToast('A conta bancária deve ter exatamente 21 dígitos numéricos', 'warning');
+            return;
+        }
+
+        const data = {
+            userId: userId,  // Adiciona o ID do usuário
+            name: name,
+            bankName: bankName,
+            account: account,
+            createdAt: new Date().toISOString()
+        };
+
+        // Mostra loading
+        $('body').append('<div class="loading">Salvando...</div>');
+
+        // Envia para a API JSON Server
+        $.ajax({
+            url: API_URL,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function(response) {
+                $('.loading').remove();
+                
+                // Atualiza o card
+                $('#cardName').text(name);
+                $('#cardBank').text(bankName);
+                $('#cardAccount').text(account);
+                $('#infoCard').removeClass('hidden');
+                
+                showToast('Dados salvos com sucesso!', 'success');
+                
+                // Redireciona após 1 segundo
+                setTimeout(function() {
+                    window.location.href = 'meu.html';
+                }, 1000);
+            },
+            error: function(xhr, status, error) {
+                $('.loading').remove();
+                showToast('Erro ao salvar: ' + error, 'error');
+                console.error("Erro na API:", xhr.responseText);
+            }
+        });
+    });
+
+    // Botão Editar
+    $('#editBtn').click(function() {
+        $('#infoCard').addClass('hidden');
+        showToast('Modo edição ativado', 'info');
+    });
+});
+</script>
+</body>
+</html>
