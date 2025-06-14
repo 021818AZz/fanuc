@@ -338,8 +338,8 @@
     let nextCollectionTime = null;
     let countdownInterval = null;
     
-    // Função para mostrar modal
-    function showModal(message) {
+    // Função para mostrar modal (modificada para aceitar recarregamento)
+    function showModal(message, reload = false) {
         const modal = document.getElementById('messageModal');
         const modalMessage = document.getElementById('modalMessage');
         modalMessage.textContent = message;
@@ -348,12 +348,18 @@
         // Fechar modal quando clicar no X
         document.querySelector('.close-modal').onclick = function() {
             modal.style.display = 'none';
+            if (reload) {
+                location.reload(); // Recarrega a página
+            }
         }
         
         // Fechar modal quando clicar fora
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = 'none';
+                if (reload) {
+                    location.reload(); // Recarrega a página
+                }
             }
         }
     }
@@ -623,24 +629,8 @@
                 throw new Error('Erro ao atualizar saldo');
             }
             
-            showModal(`Você recebeu KZ ${product.renda_diaria.toLocaleString('pt-BR')} com sucesso!`);
+            showModal(`Você recebeu KZ ${product.renda_diaria.toLocaleString('pt-BR')} com sucesso!`, true);
             
-            // Desabilitar o botão de coleta para este produto
-            const collectBtn = document.getElementById(`collect-${productId}`);
-            if (collectBtn) {
-                collectBtn.classList.add('disabled');
-                collectBtn.textContent = 'Já recebido';
-                collectBtn.disabled = true;
-                
-                // Atualizar a mensagem de restrição
-                const restrictionMsg = document.getElementById(`restriction-${productId}`);
-                if (restrictionMsg) {
-                    restrictionMsg.textContent = 'Você já coletou a renda hoje';
-                }
-            }
-            
-            // Atualizar o total de ganhos
-            calculateTotalEarnings();
         } catch (error) {
             console.error('Erro ao coletar renda:', error);
             showModal('Erro ao coletar renda. Tente novamente.');
@@ -715,26 +705,8 @@
                 throw new Error('Erro ao atualizar saldo');
             }
             
-            showModal(`Você recebeu KZ ${totalCollected.toLocaleString('pt-BR')} no total!`);
+            showModal(`Você recebeu KZ ${totalCollected.toLocaleString('pt-BR')} no total!`, true);
             
-            // Atualizar a interface para todos os produtos coletados
-            productsToCollect.forEach(product => {
-                const collectBtn = document.getElementById(`collect-${product.id}`);
-                if (collectBtn) {
-                    collectBtn.classList.add('disabled');
-                    collectBtn.textContent = 'Já recebido';
-                    collectBtn.disabled = true;
-                    
-                    // Atualizar a mensagem de restrição
-                    const restrictionMsg = document.getElementById(`restriction-${product.id}`);
-                    if (restrictionMsg) {
-                        restrictionMsg.textContent = 'Você já coletou a renda hoje';
-                    }
-                }
-            });
-            
-            // Atualizar o total de ganhos
-            calculateTotalEarnings();
         } catch (error) {
             console.error('Erro ao coletar renda:', error);
             showModal('Erro ao coletar renda. Tente novamente.');
@@ -746,5 +718,3 @@
         loadPurchasedProducts();
     });
 </script>
-</body>
-</html>
